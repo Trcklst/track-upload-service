@@ -62,7 +62,11 @@ export class UploadService {
   async get(trackId: string) {
       return this.fileModel
         .findOne({filename: trackId + FILE_EXTENSION})
-        .then(res => res)
+        .then(res => {return {
+          _id: res._id,
+          filename: res.filename,
+          contentType: res.contentType,
+        }})
         .catch(() => null);
   }
 }

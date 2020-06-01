@@ -5,7 +5,7 @@ Service permettant de :
 
 ##Routes
 - POST /upload/:youtubeId : téléchargement de l'audio : 204 
-- Get /upload/:youtubeId : verifie en base l'existence du fichier : 200 null | {fileInfos}
+- Get /upload/:youtubeId : verifie en base l'existence du fichier : null | {fileInfos}
 
 ##Events sent
 - upload-error {trackId}
