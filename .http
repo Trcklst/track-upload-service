@@ -3,3 +3,8 @@
 POST http://localhost:8081/upload/zqro1v11t78
 content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsInJvbGUiOjF9.28HGMLxA_YC5N-ydNu1B4_5NhlZwopoOlGVQqXHuFW4
+
+###Get track info
+GET http://localhost:8081/upload/zqro1v11t78
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsInJvbGUiOjF9.28HGMLxA_YC5N-ydNu1B4_5NhlZwopoOlGVQqXHuFW4
