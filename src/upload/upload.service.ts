@@ -6,6 +6,7 @@ import { Connection } from 'mongoose';
 import { FILE_EXTENSION, YOUTUBE_VIDEO_URL } from '../constants';
 import * as ytdl  from 'ytdl-core';
 import { RabbitMqService } from '../rabbit-mq/rabbit-mq.service';
+import { UserDto } from '../user/dto/user.dto';
 
 @Injectable()
 export class UploadService {
@@ -18,12 +19,13 @@ export class UploadService {
     this.fileModel = new MongoGridFS(this.connection.db, configuration.database.dbname);
   }
 
-  async upload(trackId : string) {
+  async upload(trackId : string, user: UserDto) {
     const track = await this.get(trackId);
     if(track) {
       this.rabbitMqService.send('uploaded', {
         trackId: trackId,
-        progress: 100
+        progress: 100,
+        userId: user.id
       });
       return;
     }
@@ -33,7 +35,7 @@ export class UploadService {
     const trackFile = ytdl(url, {filter: 'audioonly'});
 
     trackFile.on('error', () => {
-      this.rabbitMqService.send('upload-error', { trackId: trackId });
+      this.rabbitMqService.send('upload-error', { trackId: trackId, userId: user.id });
     });
 
     trackFile.on('progress', (chunkLength, downloaded, total) => {
@@ -42,7 +44,8 @@ export class UploadService {
       if(progress != oldProgress && progress % 10 == 0) {
         this.rabbitMqService.send('progress-upload', {
           trackId: trackId,
-          progress: progress
+          progress: progress,
+          userId: user.id
         });
       }
     });
@@ -50,7 +53,8 @@ export class UploadService {
     trackFile.on('end', () => {
       this.rabbitMqService.send('uploaded', {
         trackId: trackId,
-        progress: progress
+        progress: 100,
+        userId: user.id
       });
     });
 

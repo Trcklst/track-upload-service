@@ -8,9 +8,9 @@ Service permettant de :
 - Get /upload/:youtubeId : verifie en base l'existence du fichier : null | {fileInfos}
 
 ##Events sent
-- upload-error {trackId}
-- progress-upload {trackId, progress}
-- uploaded {trackId, progress}
+- upload-error {trackId, userId}
+- progress-upload {trackId, progress, userId}
+- uploaded {trackId, progress, userId}
 
 ##Todo 
 - Améliorer gestion d'erreur (rabbitMq, mongo)

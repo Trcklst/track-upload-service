@@ -1,5 +1,7 @@
 import { Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { UploadService } from './upload.service';
+import { RequestUser } from '../user/decorator/user.decorator';
+import { UserDto } from '../user/dto/user.dto';
 
 @Controller('upload')
 export class UploadController {
@@ -9,8 +11,8 @@ export class UploadController {
 
   @Post(':id')
   @HttpCode(204)
-  async upload(@Param('id') trackId : string) {
-    await this.uploadService.upload(trackId);
+  async upload(@RequestUser() user: UserDto, @Param('id') trackId : string) {
+    await this.uploadService.upload(trackId, user);
     return;
   }
 
