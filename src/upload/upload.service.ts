@@ -25,7 +25,7 @@ export class UploadService {
       this.rabbitMqService.send('uploaded', {
         trackId: trackId,
         progress: 100,
-        userId: user.id
+        userId: user.userId
       });
       return;
     }
@@ -35,7 +35,7 @@ export class UploadService {
     const trackFile = ytdl(url, {filter: 'audioonly'});
 
     trackFile.on('error', () => {
-      this.rabbitMqService.send('upload-error', { trackId: trackId, userId: user.id });
+      this.rabbitMqService.send('upload-error', { trackId: trackId, userId: user.userId });
     });
 
     trackFile.on('progress', (chunkLength, downloaded, total) => {
@@ -45,7 +45,7 @@ export class UploadService {
         this.rabbitMqService.send('progress-upload', {
           trackId: trackId,
           progress: progress,
-          userId: user.id
+          userId: user.userId
         });
       }
     });
@@ -54,7 +54,7 @@ export class UploadService {
       this.rabbitMqService.send('uploaded', {
         trackId: trackId,
         progress: 100,
-        userId: user.id
+        userId: user.userId
       });
     });
 
