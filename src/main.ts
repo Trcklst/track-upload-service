@@ -11,23 +11,27 @@ async function bootstrap() {
   const client = new Eureka({
     instance: {
       app: 'track-upload-service',
+      instanceId: `track-upload-service:${configuration.app.port}`,
       hostName: configuration.eurekaClient.instance.hostName,
       port: {
         '$': configuration.app.port,
         '@enabled': 'true',
       },
-      ipAddr: configuration.eurekaClient.instance.hostName,
-      vipAddress: configuration.eurekaClient.instance.hostName,
+      status: 'UP',
+      ipAddr: '0.0.0.0',
+      vipAddress: 'track-upload-service',
       dataCenterInfo: {
         '@class': 'com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo',
         name: 'MyOwn',
       }
     },
     eureka: {
+      preferIpAddress: true,
       host: configuration.eurekaClient.eureka.host,
       port: configuration.eurekaClient.eureka.port,
       servicePath: '/eureka/apps/',
-      maxRetries: 15
+      maxRetries: 15,
+      requestRetryDelay: 2000
     }
   });
   client.start();
